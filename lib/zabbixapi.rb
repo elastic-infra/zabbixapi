@@ -28,6 +28,7 @@ require 'zabbixapi/classes/usergroups'
 require 'zabbixapi/classes/usermacros'
 require 'zabbixapi/classes/users'
 require 'zabbixapi/classes/valuemaps'
+require 'zabbixapi/classes/drules'
 
 class ZabbixApi
   # @return [ZabbixApi::Client]
@@ -51,7 +52,13 @@ class ZabbixApi
   # @param data [Hash]
   # @return [Hash]
   def query(data)
-    @client.api_request(:method => data[:method], :params => data[:params])
+    @client.api_request(method: data[:method], params: data[:params])
+  end
+
+  # Invalidate current authentication token
+  # @return [Boolean]
+  def logout
+    @client.logout
   end
 
   # Initializes a new ZabbixApi object
@@ -160,5 +167,10 @@ class ZabbixApi
   # @return [ZabbixApi::ValueMaps]
   def valuemaps
     @valuemaps ||= ValueMaps.new(@client)
+  end
+
+  # @return [ZabbixApi::Drules]
+  def drules
+    @drules ||= Drules.new(@client)
   end
 end
